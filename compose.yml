@@ -4,6 +4,6 @@ services:
     build: ./
     volumes:
       - ./php/php.ini:/usr/local/etc/php/php.ini
-      - ./html:/var/www/html
+      - ./public:/var/www/html
     ports:
       - 8089:80
