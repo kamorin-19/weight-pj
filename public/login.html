@@ -1,10 +1,19 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8" />
-  <title>Document</title>
+  <meta charset="UTF-8">
+  <title>ログイン</title>
 </head>
 <body>
-  <p>テストページ</p>
+  <form>
+    <label for="username">ユーザー名：</label>
+    <input type="text" id="username" name="username" required>
+    <br>
+    <label for="password">パスワード：</label>
+    <input type="password" id="password" name="password" required>
+    <br>
+    <button type="submit" onclick="handleLoginClick()">ログイン</button>
+  </form>
+  <script src="index.js"></script>
 </body>
 </html>

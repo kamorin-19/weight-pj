@@ -1,1 +1,3 @@
-console.log("a");
+const handleLoginClick = () => {
+    console.log("test");
+};
