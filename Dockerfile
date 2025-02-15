@@ -1,8 +1,10 @@
 FROM php:8.2-apache
 
 # 1. Xdebugのインストール
-RUN pecl install xdebug && \
-    docker-php-ext-enable xdebug
+RUN if ! pecl list | grep -q xdebug; then \
+    pecl install xdebug && \
+    docker-php-ext-enable xdebug; \
+fi
 
 # 2. Node.js と npm のインストール
 #   (Debian系のパッケージを利用。必要に応じてバージョン管理方法を変更してください)

@@ -2,3 +2,5 @@
 $test = "test";
 
 print $test;
+
+phpinfo();
