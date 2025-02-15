@@ -4,6 +4,7 @@ services:
     build: ./
     volumes:
       - ./php/php.ini:/usr/local/etc/php/php.ini
+      - ./apache/apache.conf:/etc/apache2/sites-available/000-default.conf
       - ./public:/var/www/html
     ports:
       - 8089:80
