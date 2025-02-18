@@ -20,3 +20,7 @@
 npm run lint
 npm run lint:fix
 npm run format
+
+### axiosをインストール
+1.docker exec -it 7c3681b70199 /bin/bash
+2.npm install axios

@@ -3,6 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <title>ログイン</title>
+  <script type="importmap">
+    {
+      "imports": {
+        "axios": "./node_modules/axios/dist/esm/axios.js"
+      }
+    }
+    </script>
 </head>
 <body>
   <form>
@@ -12,8 +19,8 @@
     <label for="password">パスワード：</label>
     <input type="password" id="password" name="password" required>
     <br>
-    <button type="submit" onclick="handleLoginClick()">ログイン</button>
+    <button type="button" id="loginButton">ログイン</button>
   </form>
-  <script src="index.js"></script>
+  <script type="module" src="index.js"></script>
 </body>
 </html>
