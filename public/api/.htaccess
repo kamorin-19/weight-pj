@@ -1,0 +1,6 @@
+RewriteEngine On
+RewriteBase /api/
+# 既存のテストルールを削除し、全てのリクエストをrouter.phpにルーティング
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ router.php [QSA,L]

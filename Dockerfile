@@ -15,3 +15,6 @@ RUN apt-get update && \
     # 不要ファイルの削除
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
+
+# mod_rewriteを有効にする
+RUN a2enmod rewrite

@@ -9,23 +9,23 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 import axios from "axios";
 const handleLoginClick = () => __awaiter(void 0, void 0, void 0, function* () {
-    console.log("★");
     const usernameInput = document.getElementById('username');
     const passwordInput = document.getElementById('password');
     if (!usernameInput || !passwordInput)
         return;
-    console.log("★★");
     const username = usernameInput.value;
     const password = passwordInput.value;
     try {
-        console.log("★★★");
-        const response = yield axios.post('http://localhost/login', { username, password });
-        console.log(1);
+        // 修正: エンドポイントを LoginController.php に変更（api フォルダ内）
+        const response = yield axios.post('http://localhost:8089/api/LoginController/login', { username, password }, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            }
+        });
         console.log('Response:', response.data);
     }
     catch (error) {
-        console.log("★★★★");
-        console.log(2);
         console.error('Error:', error);
     }
 });

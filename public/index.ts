@@ -11,7 +11,16 @@ const handleLoginClick = async (): Promise<void> => {
   const password = passwordInput.value;
 
   try {
-    const response = await axios.post('http://localhost/login', { username, password });
+    // 修正: エンドポイントを LoginController.php に変更（api フォルダ内）
+    const response = await axios.post('http://localhost:8089/api/LoginController/login', 
+        { username, password },
+        {
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            }
+        }
+    );
     console.log('Response:', response.data);
   } catch (error) {
     console.error('Error:', error);
