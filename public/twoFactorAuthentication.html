@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>二要素認証</title>
+    <script type="importmap">
+        {
+          "imports": {
+            "axios": "./node_modules/axios/dist/esm/axios.js"
+          }
+        }
+    </script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+        input {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        button {
+            width: 100%;
+            padding: 0.75rem;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>二要素認証</h2>
+        <form id="twoFactorForm">
+            <div class="form-group">
+                <label for="passcode">パスコード:</label>
+                <input type="text" id="passcode" name="passcode" required maxlength="6" pattern="\d{6}" placeholder="6桁のコードを入力">
+            </div>
+            <button type="button" id="twoFactorButton">認証</button>
+        </form>
+    </div>
+    <script type="module" src="twoFactorAuthentication.js"></script>
+</body>
+</html>

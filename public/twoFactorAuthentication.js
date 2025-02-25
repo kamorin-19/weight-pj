@@ -8,23 +8,17 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import axios from "axios";
-const handleLoginClick = () => __awaiter(void 0, void 0, void 0, function* () {
-    const usernameInput = document.getElementById('username');
-    const passwordInput = document.getElementById('password');
-    if (!usernameInput || !passwordInput)
-        return;
-    const username = usernameInput.value;
-    const password = passwordInput.value;
+const twoFactorButtonClick = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
         // 修正: エンドポイントを LoginController.php に変更（api フォルダ内）
-        const response = yield axios.post('http://localhost:8089/api/LoginController/login', { username, password }, {
+        const response = yield axios.post('http://localhost:8089/api/TwoFactorAuthenticationController/Authentication', {}, {
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
             }
         });
         if (response.data.message === 'Login successful') {
-            window.location.href = './twoFactorAuthentication.html';
+            window.location.href = './menu.html';
         }
         else {
             console.log('Response:', response.data);
@@ -36,10 +30,10 @@ const handleLoginClick = () => __awaiter(void 0, void 0, void 0, function* () {
 });
 // DOMが読み込まれてからイベントリスナーを追加する
 document.addEventListener('DOMContentLoaded', () => {
-    const loginButton = document.getElementById('loginButton');
-    if (!loginButton) {
-        console.error("loginButton が見つかりません");
+    const twoFactorButton = document.getElementById('twoFactorButton');
+    if (!twoFactorButton) {
+        console.error("twoFactorButton が見つかりません");
         return;
     }
-    loginButton.addEventListener('click', handleLoginClick);
+    twoFactorButton.addEventListener('click', twoFactorButtonClick);
 });

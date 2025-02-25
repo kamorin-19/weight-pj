@@ -21,7 +21,11 @@ const handleLoginClick = async (): Promise<void> => {
             }
         }
     );
-    console.log('Response:', response.data);
+    if (response.data.message === 'Login successful') {
+      window.location.href = './twoFactorAuthentication.html';
+    } else {
+      console.log('Response:', response.data);
+    }
   } catch (error) {
     console.error('Error:', error);
   }
