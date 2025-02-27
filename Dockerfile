@@ -18,3 +18,4 @@ RUN apt-get update && \
 
 # mod_rewriteを有効にする
 RUN a2enmod rewrite
+RUN docker-php-ext-install pdo_mysql
