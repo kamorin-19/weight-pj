@@ -36,5 +36,17 @@ else
     echo "Table 'muscle_groups' already exists. No action needed."
 fi
 
+# 指定したデータベース内に「exercises」というテーブルが存在するかチェック
+echo "Checking if table 'exercises' exists in database 'weight_admin'..."
+TABLE_EXISTS=$(mysql -u root -p"rootpassword" -D "weight_admin" -e "SHOW TABLES LIKE 'exercises';" | grep exercises || true)
+
+# 種目テーブルが存在しない場合は作成
+if [ -z "$TABLE_EXISTS" ]; then
+    echo "Table 'exercises' not found. Creating table..."
+    mysql -u root -p"rootpassword" -D "weight_admin" < /docker-entrypoint-initdb.d/create_exercises.sql
+else
+    echo "Table 'exercises' already exists. No action needed."
+fi
+
 # mysqld をフォアグラウンドに切り替える（もし必要なら）
 exec mysqld

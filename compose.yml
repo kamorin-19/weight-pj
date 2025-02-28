@@ -22,6 +22,7 @@ services:
       - ./batch/init.sh:/docker-entrypoint-initdb.d/init.sh:ro
       - ./batch/sql/create_users.sql:/docker-entrypoint-initdb.d/create_users.sql:ro
       - ./batch/sql/create_muscle_groups.sql:/docker-entrypoint-initdb.d/create_muscle_groups.sql:ro
+      - ./batch/sql/create_exercises.sql:/docker-entrypoint-initdb.d/create_exercises.sql:ro
     # シェルスクリプトを実行後、通常のmysqldを起動する
     command: ["/bin/bash", "/docker-entrypoint-initdb.d/init.sh", "mysqld"]
 
