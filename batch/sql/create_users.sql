@@ -4,5 +4,6 @@ CREATE TABLE IF NOT EXISTS users (
     password VARCHAR(255) NOT NULL,
     passcode VARCHAR(255) ,
     email VARCHAR(255) NOT NULL,
-    verified_at DATETIME
+    verified_at DATETIME,
+    deleted_at DATETIME
 );
