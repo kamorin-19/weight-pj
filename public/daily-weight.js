@@ -12,51 +12,36 @@ import { initializeFooter } from './footer.js';
 import axios from "axios";
 // ページ読み込み時にヘッダーとフッターを描画
 document.addEventListener('DOMContentLoaded', () => {
+    var _a;
     // ヘッダー描画
     showHeader();
     // フッター描画
     showFooter();
     // データ取得
-    // getExercises();
+    getDailyWeights();
     // ボタン描画
     showButton();
     // 新規作成ボタンにクリックイベントを追加
-    /*document.getElementById('create-button')?.addEventListener('click', async () => {
-        const response = await axios.post('http://localhost:8089/api/MuscleGroupsController/getMuscleGroups',
-            { },
-            {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                }
-            }
-        );
-        // レスポンスデータを取得
-        const muscleGroups = response.data;
-
+    (_a = document.getElementById('create-button')) === null || _a === void 0 ? void 0 : _a.addEventListener('click', () => __awaiter(void 0, void 0, void 0, function* () {
+        var _a, _b;
         // ダイアログを表示
         // ダイアログを表示する関数を呼び出し
         const dialog = document.createElement('dialog');
         dialog.id = 'create-exercise-dialog';
         dialog.innerHTML = `
-            <h3>種目の新規作成</h3>
+            <h3>体重記録の作成</h3>
             <form method="dialog">
                 <div>
-                    <label for="exercise-name">種目名:</label>
-                    <input type="text" id="exercise-name" name="name" required>
+                    <label for="recorded-date">日付:</label>
+                    <input type="text" id="recorded-date" name="recorded-date" required>
                 </div>
                 <div>
-                    <label for="exercise-ponderation">重み:</label>
-                    <input type="number" id="exercise-ponderation" name="ponderation" required>
+                    <label for="recorded-weight">体重:</label>
+                    <input type="number" id="recorded-weight" name="recorded-weight" required>
                 </div>
                 <div>
-                    <label for="exercise-muscle-group">部位:</label>
-                    <select id="exercise-muscle-group" name="muscle_group_id" required>
-                        <option value="">部位を選択してください</option>
-                        ${muscleGroups && muscleGroups.name ?
-                            muscleGroups.name.map((name: { id: number; name: string }) => `<option value="${name.id}">${name.name}</option>`).join('')
-                        : ''}
-                    </select>
+                    <label for="body-fat-rate">体脂肪率:</label>
+                    <input type="number" id="body-fat-rate" name="body-fat-rate" required>
                 </div>
                 <div>
                     <button type="button" id="register-button">保存</button>
@@ -64,75 +49,56 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
             </form>
         `;
-        
         document.body.appendChild(dialog);
-        
         // キャンセルボタンのイベントリスナーを追加
-        dialog.querySelector('#cancel-button')?.addEventListener('click', () => {
+        (_a = dialog.querySelector('#cancel-button')) === null || _a === void 0 ? void 0 : _a.addEventListener('click', () => {
             dialog.close();
             dialog.remove();
         });
         // 保存ボタンのイベントリスナーを追加
-        dialog.querySelector('#register-button')?.addEventListener('click', async () => {
+        (_b = dialog.querySelector('#register-button')) === null || _b === void 0 ? void 0 : _b.addEventListener('click', () => __awaiter(void 0, void 0, void 0, function* () {
             // 入力値を取得
-            const nameInput = document.getElementById('exercise-name') as HTMLInputElement;
-            const name = nameInput.value.trim();
-            const ponderationInput = document.getElementById('exercise-ponderation') as HTMLInputElement;
-            const ponderation = ponderationInput.value.trim();
-            const muscleGroupIdInput = document.getElementById('exercise-muscle-group') as HTMLSelectElement;
-            const muscleGroupId = muscleGroupIdInput.value.trim();
-            
-            if (!name) {
-                alert('種目名を入力してください');
-                return;
-            }
-            if (!ponderation) {
-                alert('重みを入力してください');
-                return;
-            }
-            if (!muscleGroupId) {
-                alert('部位を選択してください');
-                return;
-            }
-
+            const recordedDateInput = document.getElementById('recorded-date');
+            const recordedDate = recordedDateInput.value.trim();
+            const dailyWeightInput = document.getElementById('recorded-weight');
+            const dailyWeight = dailyWeightInput.value.trim();
+            const bodyFatRateInput = document.getElementById('body-fat-rate');
+            const bodyFatRate = bodyFatRateInput.value.trim();
             try {
                 // APIを呼び出して部位を登録
-                const response = await axios.post('http://localhost:8089/api/ExercisesController/createExercise',
-                    { name, ponderation, muscleGroupId },
-                    {
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Accept': 'application/json'
-                        }
+                const response = yield axios.post('http://localhost:8089/api/DailyWeightController/createDailyWeight', { recordedDate, dailyWeight, bodyFatRate }, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
                     }
-                );
-                
+                });
                 // 登録成功時の処理
                 if (response.data.message === 'Create successful') {
-                    alert('部位を登録しました');
+                    alert('体重を登録しました');
                     dialog.close();
                     dialog.remove();
-                    
                     // データを再取得して表示を更新
-                    getExercises();
-                } else {
+                    getDailyWeights();
+                }
+                else {
                     alert('登録に失敗しました: ' + response.data.message);
                 }
-            } catch (error) {
+            }
+            catch (error) {
                 console.error('エラーが発生しました:', error);
                 alert('登録処理中にエラーが発生しました');
             }
-        });
+        }));
         // ダイアログを表示
         dialog.showModal();
-    });*/
+    }));
 });
 const showHeader = () => {
     // ヘッダーを描画
-    const headerHTML = initializeHeader('種目マスタ');
-    const exercisesDiv = document.getElementById('exercises');
-    if (exercisesDiv) {
-        exercisesDiv.insertAdjacentHTML('beforeend', headerHTML);
+    const headerHTML = initializeHeader('体重記録');
+    const dailyWeightDiv = document.getElementById('daily-weight');
+    if (dailyWeightDiv) {
+        dailyWeightDiv.insertAdjacentHTML('beforeend', headerHTML);
     }
 };
 const showFooter = () => {
@@ -147,53 +113,50 @@ const showButton = () => {
             <button id="create-button">新規作成</button>
         </div>
     `;
-    const exercisesDiv = document.getElementById('exercises');
-    if (exercisesDiv) {
-        exercisesDiv.insertAdjacentHTML('beforeend', buttonHTML);
+    const dailyWeightDiv = document.getElementById('daily-weight');
+    if (dailyWeightDiv) {
+        dailyWeightDiv.insertAdjacentHTML('beforeend', buttonHTML);
     }
 };
-const getExercises = () => __awaiter(void 0, void 0, void 0, function* () {
+const getDailyWeights = () => __awaiter(void 0, void 0, void 0, function* () {
     // 種目マスタを取得
     try {
         // Todo: メソッド名は要件等
-        const response = yield axios.post('http://localhost:8089/api/ExercisesController/getExercises', {}, {
+        const response = yield axios.post('http://localhost:8089/api/DailyWeightController/getDailyWeights', {}, {
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
             }
         });
         // レスポンスデータを取得
-        const exercises = response.data;
-        console.log("★");
-        console.log(exercises);
-        console.log(exercises.exercises);
+        const dailyWeights = response.data;
         // テーブルを作成
         const tableHTML = `
-            <h2>種目一覧</h2>
+            <h2>体重記録</h2>
             <table border="1">
                 <thead>
                     <tr>
-                        <th>種目名</th>
-                        <th>重み</th>
-                        <th>部位</th>
+                        <th>日付</th>
+                        <th>体重</th>
+                        <th>体脂肪率</th>
                     </tr>
                 </thead>
                 <tbody>
-                    ${exercises && exercises.exercises ?
-            exercises.exercises.map((name, ponderation, muscle_group_name) => `
+                    ${dailyWeights && dailyWeights.dailyWeights ?
+            dailyWeights.dailyWeights.map((dailyWeight) => `
                         <tr>
-                            <td>${name}</td>
-                            <td>${ponderation}</td>
-                            <td>${muscle_group_name}</td>
+                            <td>${dailyWeight.record_date}</td>
+                            <td>${dailyWeight.weight}</td>
+                            <td>${dailyWeight.body_fat_rate}</td>
                         </tr>`).join('')
             : ''}
                 </tbody>
             </table>
         `;
         // テーブルをDOMに追加
-        const exercisesDiv = document.getElementById('exercises');
-        if (exercisesDiv) {
-            exercisesDiv.insertAdjacentHTML('beforeend', tableHTML);
+        const dailyWeightDiv = document.getElementById('daily-weight');
+        if (dailyWeightDiv) {
+            dailyWeightDiv.insertAdjacentHTML('beforeend', tableHTML);
         }
     }
     catch (error) {
