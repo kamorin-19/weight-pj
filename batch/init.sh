@@ -60,5 +60,17 @@ else
     echo "Table 'daily_weights' already exists. No action needed."
 fi
 
+# 指定したデータベース内に「daily_calories」というテーブルが存在するかチェック
+echo "Checking if table 'daily_calories' exists in database 'weight_admin'..."
+TABLE_EXISTS=$(mysql -u root -p"rootpassword" -D "weight_admin" -e "SHOW TABLES LIKE 'daily_calories';" | grep daily_calories || true)
+
+# カロリー記録テーブルが存在しない場合は作成
+if [ -z "$TABLE_EXISTS" ]; then
+    echo "Table 'daily_calories' not found. Creating table..."
+    mysql -u root -p"rootpassword" -D "weight_admin" < /docker-entrypoint-initdb.d/create_daily_calories.sql
+else
+    echo "Table 'daily_calories' already exists. No action needed."
+fi
+
 # mysqld をフォアグラウンドに切り替える（もし必要なら）
 exec mysqld
