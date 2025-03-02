@@ -180,11 +180,11 @@ const getExercises = async (): Promise<void> => {
                 </thead>
                 <tbody>
                     ${exercises && exercises.exercises ? 
-                        exercises.exercises.map((name: string, ponderation: number, muscleGroupId: number, muscleGroupName: string) => `
+                        exercises.exercises.map((name: string, ponderation: number, muscle_group_name: string) => `
                         <tr>
                             <td>${name}</td>
                             <td>${ponderation}</td>
-                            <td>${muscleGroupName}</td>
+                            <td>${muscle_group_name}</td>
                         </tr>`).join('')
                     : ''}
                 </tbody>

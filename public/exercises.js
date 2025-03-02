@@ -171,11 +171,11 @@ const getExercises = () => __awaiter(void 0, void 0, void 0, function* () {
                 </thead>
                 <tbody>
                     ${exercises && exercises.exercises ?
-            exercises.exercises.map((name, ponderation, muscleGroupId, muscleGroupName) => `
+            exercises.exercises.map((name, ponderation, muscle_group_name) => `
                         <tr>
                             <td>${name}</td>
                             <td>${ponderation}</td>
-                            <td>${muscleGroupName}</td>
+                            <td>${muscle_group_name}</td>
                         </tr>`).join('')
             : ''}
                 </tbody>
