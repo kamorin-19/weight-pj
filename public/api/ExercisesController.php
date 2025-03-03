@@ -56,6 +56,7 @@ class ExercisesController {
                 if (isset($exercise['name'])) {
                     // 種目情報を配列に格納
                     $exerciseNames[] = [
+                        'id' => $exercise['id'],
                         'name' => $exercise['name'],
                         'ponderation' => $exercise['ponderation'],
                         'muscle_group_id' => $exercise['muscle_group_id'],
