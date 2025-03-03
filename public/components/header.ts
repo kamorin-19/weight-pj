@@ -1,10 +1,35 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>メニュー</title>
-    <style>
+export function initializeHeader(pageName: string): string {
+    // ヘッダー部分のHTML
+    const headerHTML = `
+        <header>
+            <div class="header-content">
+                <h1>${pageName}</h1>
+                <div class="hamburger-menu">
+                    <input type="checkbox" id="menu-toggle" class="menu-toggle">
+                    <label for="menu-toggle" class="menu-button">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </label>
+                    <nav class="menu-content">
+                        <ul>
+                            <li><a href="./daily-weight.html">体重記録</a></li>
+                            <li><a href="./daily-workout.html">筋トレ記録</a></li>
+                            <li><a href="./daily-calory.html">カロリー記録</a></li>
+                            <li><a href="#">データ推移</a></li>
+                            <li><a href="#">CSV取込</a></li>
+                            <li><a href="./exercises.html">種目マスタ</a></li>
+                            <li><a href="./muscle-group.html">部位マスタ</a></li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </header>
+    `;
+
+    // スタイルの追加
+    const style = document.createElement('style');
+    style.textContent = `
         body {
             margin: 0;
             padding: 0;
@@ -88,51 +113,11 @@
         .menu-content a:hover {
             background-color: #f5f5f5;
         }
-        .menu-list {
-            list-style: none;
-            padding: 20px;
-        }
-        .menu-item {
-            margin: 10px 0;
-        }
-        .menu-link {
-            text-decoration: none;
-            color: #333;
-            font-size: 16px;
-            padding: 8px 16px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            display: inline-block;
-        }
-        .menu-link:hover {
-            background-color: #f0f0f0;
-        }
-    </style>
-</head>
-<body>
-    <header>
-        <div class="header-content">
-            <h1>メニュー</h1>
-            <div class="hamburger-menu">
-                <input type="checkbox" id="menu-toggle" class="menu-toggle">
-                <label for="menu-toggle" class="menu-button">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </label>
-                <nav class="menu-content">
-                    <ul>
-                        <li><a href="daily-weight.html" class="menu-link">体重記録</a></li>
-                        <li><a href="daily-workout.html" class="menu-link">筋トレ記録</a></li>
-                        <li><a href="daily-calory.html" class="menu-link">カロリー記録</a></li>
-                        <li><a href="#">データ推移</a></li>
-                        <li><a href="import-csv.html" class="menu-link">CSV取込</a></li>
-                        <li><a href="exercises.html" class="menu-link">種目マスタ</a></li>
-                        <li><a href="muscle-group.html" class="menu-link">部位マスタ</a></li>
-                    </ul>
-                </nav>
-            </div>
-        </div>
-    </header>
-</body>
-</html>
+    `;
+
+    // スタイルをheadに追加
+    document.head.appendChild(style);
+
+    // ヘッダーを返却する
+    return headerHTML;
+} 

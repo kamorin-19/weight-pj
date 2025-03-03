@@ -18,7 +18,7 @@ const twoFactorButtonClick = () => __awaiter(void 0, void 0, void 0, function* (
             }
         });
         if (response.data.message === 'Login successful') {
-            window.location.href = './menu.html';
+            window.location.href = './views/menu.html';
         }
         else {
             console.log('Response:', response.data);
