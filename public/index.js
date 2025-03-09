@@ -17,7 +17,7 @@ const handleLoginClick = () => __awaiter(void 0, void 0, void 0, function* () {
     const password = passwordInput.value;
     try {
         // 修正: エンドポイントを LoginController.php に変更（api フォルダ内）
-        const response = yield axios.post('http://localhost:8089/api/LoginController/login', { username, password }, {
+        const response = yield axios.post('http://localhost:8089/api/Base/LoginController/login', { username, password }, {
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'

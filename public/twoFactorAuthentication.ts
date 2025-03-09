@@ -4,7 +4,7 @@ const twoFactorButtonClick = async (): Promise<void> => {
 
   try {
     // 修正: エンドポイントを LoginController.php に変更（api フォルダ内）
-    const response = await axios.post('http://localhost:8089/api/TwoFactorAuthenticationController/Authentication', 
+    const response = await axios.post('http://localhost:8089/api/Base/TwoFactorAuthenticationController/Authentication', 
         { },
         {
             headers: {

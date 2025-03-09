@@ -11,7 +11,7 @@ import axios from "axios";
 const twoFactorButtonClick = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
         // 修正: エンドポイントを LoginController.php に変更（api フォルダ内）
-        const response = yield axios.post('http://localhost:8089/api/TwoFactorAuthenticationController/Authentication', {}, {
+        const response = yield axios.post('http://localhost:8089/api/Base/TwoFactorAuthenticationController/Authentication', {}, {
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'

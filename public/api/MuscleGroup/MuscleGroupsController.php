@@ -85,12 +85,12 @@ class MuscleGroupsController {
         $data = json_decode($json, true);
         
         // 部位名が提供されているか確認
-        if (!isset($data['name']) || empty($data['name'])) {
+        if (!isset($data['muscleGroupName']) || empty($data['muscleGroupName'])) {
             http_response_code(400);
             return ['message' => 'Name is required'];
         }
         
-        $name = $data['name'];
+        $name = $data['muscleGroupName'];
         
         try {
             $pdo = self::getDbConnection();

@@ -6,17 +6,21 @@ import axios from "axios";
 document.addEventListener('DOMContentLoaded', () => {
     // ヘッダー描画
     showHeader();
-    // フッター描画
-    showFooter();
-    // データ取得
-    getMuscleGroups();
-    // ボタン描画
-    showButton();
-    
-    // 新規作成ボタンにクリックイベントを追加
+    // データ取得して、表示完了後にボタン描画
+    fetchMuscleGroups().then(() => {
+        // 処理を行わない
+    }).catch(error => {
+        console.error('Error fetching muscle groups:', error);
+    }).then(() => {
+        // フッター描画
+        showFooter();
+    });
+});
+
+// イベントリスナーの追加を別関数として切り出し
+const addCreateButtonListener = () => {
     document.getElementById('create-button')?.addEventListener('click', () => {
         // ダイアログを表示
-        // ダイアログを表示する関数を呼び出し
         const dialog = document.createElement('dialog');
         dialog.id = 'create-muscle-group-dialog';
         dialog.innerHTML = `
@@ -24,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <form method="dialog">
                 <div>
                     <label for="muscle-group-name">部位名:</label>
-                    <input type="text" id="muscle-group-name" name="name" required>
+                    <input type="text" id="muscle-group-name" name="muscle-group-name" required>
                 </div>
                 <div>
                     <button type="button" id="register-button">保存</button>
@@ -40,21 +44,20 @@ document.addEventListener('DOMContentLoaded', () => {
             dialog.close();
             dialog.remove();
         });
+
         // 保存ボタンのイベントリスナーを追加
         dialog.querySelector('#register-button')?.addEventListener('click', async () => {
             // 入力値を取得
-            const nameInput = document.getElementById('muscle-group-name') as HTMLInputElement;
-            const name = nameInput.value.trim();
-            
-            if (!name) {
+            const muscleGroupNameOrg = document.getElementById('muscle-group-name') as HTMLInputElement;
+            const muscleGroupName = muscleGroupNameOrg.value.trim();
+            if (!muscleGroupName) {
                 alert('部位名を入力してください');
                 return;
             }
             
             try {
-                // APIを呼び出して部位を登録
-                const response = await axios.post('http://localhost:8089/api/MuscleGroupsController/createMuscleGroup', 
-                    { name },
+                const response = await axios.post('http://localhost:8089/api/MuscleGroup/MuscleGroupsController/createMuscleGroup', 
+                    { muscleGroupName },
                     {
                         headers: {
                             'Content-Type': 'application/json',
@@ -63,14 +66,22 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 );
                 
-                // 登録成功時の処理
                 if (response.data.message === 'Create successful') {
+                    // 登録したデータを含めて新しいデータを取得
+                    const updatedResponse = await axios.post('http://localhost:8089/api/MuscleGroup/MuscleGroupsController/fetchMuscleGroups',
+                        { },
+                        {
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Accept': 'application/json'
+                            }
+                        }
+                    );
+                    
+                    renderMuscleGroupsTable(updatedResponse.data);
                     alert('部位を登録しました');
                     dialog.close();
                     dialog.remove();
-                    
-                    // データを再取得して表示を更新
-                    getMuscleGroups();
                 } else {
                     alert('登録に失敗しました: ' + response.data.message);
                 }
@@ -82,54 +93,71 @@ document.addEventListener('DOMContentLoaded', () => {
         // ダイアログを表示
         dialog.showModal();
     });
-});
+};
 
+/**
+ * ページのヘッダーを初期化して表示する
+ * 
+ * 「部位マスタ」というタイトルを持つヘッダーを生成し、
+ * 'app' IDを持つ要素の直前に挿入します。
+ * 
+ * @returns {void} この関数は戻り値を持ちません
+ * 
+ * @requires initializeHeader 関数が定義されていること
+ * @requires 'app' IDを持つDOM要素が存在すること
+ * 
+ * @example
+ * // ページロード時やナビゲーション後に呼び出す
+ * showHeader();
+ */
 const showHeader = () => {
     // ヘッダーを描画
     const headerHTML = initializeHeader('部位マスタ');
-    const muscleGroupDiv = document.getElementById('muscle-group');
-    if (muscleGroupDiv) {
-        muscleGroupDiv.insertAdjacentHTML('beforeend', headerHTML);
+    const appDiv = document.getElementById('app');
+    if (appDiv) {
+        appDiv.insertAdjacentHTML('beforeend', headerHTML);
     }
 }
 
+/**
+ * ページのフッターを初期化して表示する
+ * 
+ * フッターを生成し、'app' IDを持つ要素の直後に挿入します。
+ * 
+ * @returns {void} この関数は戻り値を持ちません
+ * 
+ * @requires initializeFooter 関数が定義されていること
+ * @requires 'app' IDを持つDOM要素が存在すること
+ * 
+ * @example
+ * // ページロード時やナビゲーション後に呼び出す
+ * showFooter();
+ */
 const showFooter = () => {
     // フッターを描画
     const footerHTML = initializeFooter();
-    document.body.insertAdjacentHTML('beforeend', footerHTML);
-}
-
-const showButton = () => {
-    // 新規作成ボタンを描画
-    const buttonHTML = `
-        <div class="button-container">
-            <button id="create-button">新規作成</button>
-        </div>
-    `;
-    const muscleGroupDiv = document.getElementById('muscle-group');
-    if (muscleGroupDiv) {
-        muscleGroupDiv.insertAdjacentHTML('beforeend', buttonHTML);
+    const appDiv = document.getElementById('app');
+    if (appDiv) {
+        appDiv.insertAdjacentHTML('beforeend', footerHTML);
     }
 }
 
-const getMuscleGroups = async (): Promise<void> => {
-    // 部位マスタを取得
-    try {
-        // Todo: メソッド名は要件等
-        const response = await axios.post('http://localhost:8089/api/MuscleGroupsController/getMuscleGroups', 
-            { },
-            {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                }
-            }
-        );
-        // レスポンスデータを取得
-        const muscleGroups = response.data;
-        
-        // テーブルを作成
-        const tableHTML = `
+// テーブル描画用の関数を分離
+const renderMuscleGroupsTable = (muscleGroups: any) => {
+    // 既存のテーブルがあれば削除
+    const existingTable = document.querySelector('#muscle-groups-table');
+    if (existingTable) {
+        existingTable.remove();
+    }
+
+    // 既存のボタンを一時的に削除
+    const existingButton = document.querySelector('.button-container');
+    if (existingButton) {
+        existingButton.remove();
+    }
+
+    const tableHTML = `
+        <div id="muscle-groups-table">
             <h2>部位一覧</h2>
             <table border="1">
                 <thead>
@@ -146,15 +174,67 @@ const getMuscleGroups = async (): Promise<void> => {
                     : ''}
                 </tbody>
             </table>
-        `;
-        
-        // テーブルをDOMに追加
-        const muscleGroupDiv = document.getElementById('muscle-group');
-        if (muscleGroupDiv) {
-            muscleGroupDiv.insertAdjacentHTML('beforeend', tableHTML);
-        }
+        </div>
+    `;
+    
+    const appDiv = document.getElementById('app');
+    if (appDiv) {
+        appDiv.insertAdjacentHTML('beforeend', tableHTML);
+        // テーブル描画後に新規作成ボタンを再描画
+        showButton();
+        // ボタンのイベントリスナーを再設定
+        addCreateButtonListener();
+    }
+};
+
+/**
+ * 部位マスタを取得する
+ * 
+ * 部位マスタを取得するAPIを呼び出し、レスポンスデータを取得します。
+ * 
+ * @returns {void} この関数は戻り値を持ちません
+*/
+const fetchMuscleGroups = async (): Promise<void> => {
+    try {
+        const response = await axios.post('http://localhost:8089/api/MuscleGroup/MuscleGroupsController/fetchMuscleGroups', 
+            { },
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                }
+            }
+        );
+        renderMuscleGroupsTable(response.data);
     } catch (error) {
         console.error('Error:', error);
     }
 }
+
+/**
+ * 新規作成ボタンを描画する
+ * 
+ * 新規作成ボタンを生成し、'app' IDを持つ要素の直後に挿入します。
+ * 
+ * @returns {void} この関数は戻り値を持ちません
+ * 
+ * @requires 'app' IDを持つDOM要素が存在すること
+ * 
+ * @example
+ * // ページロード時やナビゲーション後に呼び出す
+ * showButton();
+ */
+const showButton = () => {
+    // 新規作成ボタンを描画
+    const buttonHTML = `
+        <div class="button-container">
+            <button id="create-button">新規作成</button>
+        </div>
+    `;
+    const appDiv = document.getElementById('app');
+    if (appDiv) {
+        appDiv.insertAdjacentHTML('beforeend', buttonHTML);
+    }
+}
+
 

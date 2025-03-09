@@ -12,7 +12,7 @@ const handleLoginClick = async (): Promise<void> => {
 
   try {
     // 修正: エンドポイントを LoginController.php に変更（api フォルダ内）
-    const response = await axios.post('http://localhost:8089/api/LoginController/login', 
+    const response = await axios.post('http://localhost:8089/api/Base/LoginController/login', 
         { username, password },
         {
             headers: {

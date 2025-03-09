@@ -24,10 +24,10 @@ document.addEventListener('DOMContentLoaded', () => {
  */
 const showHeader = () => {
     // ヘッダーを描画
-    const menuHeader = initializeHeader('メニュー');
+    const headerHTML = initializeHeader('メニュー');
     const appDiv = document.getElementById('app');
     if (appDiv) {
-        appDiv.insertAdjacentHTML('beforebegin', menuHeader);
+        appDiv.insertAdjacentHTML('beforebegin', headerHTML);
     }
 };
 /**
@@ -46,9 +46,9 @@ const showHeader = () => {
  */
 const showFooter = () => {
     // フッターを描画
-    const manuFooter = initializeFooter();
+    const footerHTML = initializeFooter();
     const appDiv = document.getElementById('app');
     if (appDiv) {
-        appDiv.insertAdjacentHTML('afterend', manuFooter);
+        appDiv.insertAdjacentHTML('afterend', footerHTML);
     }
 };

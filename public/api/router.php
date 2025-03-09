@@ -24,12 +24,13 @@ if (count($parts) < 2) {
     exit;
 }
 
-// コントローラー名とメソッド名を取得
-$controllerName = $parts[0];
-$methodName = $parts[1];
+// フォルダ名とコントローラー名とメソッド名を取得
+$folderName = $parts[0];
+$controllerName = $parts[1];
+$methodName = $parts[2];
 
 // コントローラーファイルのパスを構築（.phpを付加）
-$filePath = __DIR__ . '/' . $controllerName . '.php';
+$filePath = __DIR__ . '/' . $folderName . '/' . $controllerName . '.php';
 
 if (!file_exists($filePath)) {
     header('HTTP/1.1 404 Not Found');
